@@ -13,7 +13,10 @@ var resetPressed = true;
 
 
 init();
-
+/* Function first initializes the Buttons and sqaures for the game.
+It also checks the local storage to see if there is any previous score
+and it will pass that onto the scoreDisplay if it finds one, otherwise
+it sets the score at 0. */
 function init(){
 	setupModeButtons();
 	setupSquares();
@@ -28,6 +31,8 @@ function init(){
 	reset();
 }
 
+/* Function sets up the number of squares based on if Hard or Easy mode
+was chosen by the player. */
 function setupModeButtons(){
 	for(var i = 0; i < modeButtons.length; i++){
 		modeButtons[i].addEventListener("click", function(){
@@ -40,6 +45,12 @@ function setupModeButtons(){
 	}
 }
 
+/* Function listens for clicks and changes squares background colors
+to black if wrong square was chosen.  If player chooses the correct color
+the function updates the h1 element with the correct color and updates 
+the text with the color's name.  Also updates text to say "Correct" and
+"Play Again?".  This function also keeps track of the player's score
+and stores it in local storage.  */
 function setupSquares(){
 	for(var i = 0; i < squares.length; i++){
 	//add click listeners to squares
@@ -71,7 +82,9 @@ function setupSquares(){
 	}
 }
 
-
+/* Function runs parallel to the function above.  It 
+sends a fetch request when the correct color has been chosen
+and gets the color's name and info from the url. */
 async function updateColorName(){
 	const regex = /\([^\)]+\)/g; 
 	var rgbColors = pickedColor.match(regex); 
@@ -92,6 +105,11 @@ async function updateColorName(){
 	}
 }
 
+/* When player resets the game the function resets the h1 background
+color to "steelblue".  It also runs through a loop and assigns a 
+random color from an array to each of the squares until they all are done.  It
+also resets the color name to text showing the new color's
+rgb color breakdown text. */
 function reset(){
 	resetPressed = true;
 	colors = generateRandomColors(numSquares);
@@ -117,6 +135,9 @@ resetButton.addEventListener("click", function(){
 	reset();
 })
 
+
+/* This function uses a loop to change the background color of all
+the squares to match the correctly chosen color.  */
 function changeColors(color){
 	//loop through all squares
 	for(var i = 0; i < squares.length; i++){
@@ -125,11 +146,15 @@ function changeColors(color){
 	}
 }
 
+/* This function creates a method for randomly generating colors that
+will then be put into an array. */
 function pickColor(){
 	var random = Math.floor(Math.random() * colors.length);
 	return colors[random];
 }
 
+/* This function creates an array and then gets the randomly 
+generated colors and pushes them into an array. */
 function generateRandomColors(num){
 	//make an array
 	var arr = []
@@ -142,6 +167,8 @@ function generateRandomColors(num){
 	return arr;
 }
 
+/* Function creates the RGB breakdown and assigns each part to it's own
+variable and then concatenates the string "rgb" with the variables.  */
 function randomColor(){
 	//pick a "red" from 0 - 255
 	var r = Math.floor(Math.random() * 256);
